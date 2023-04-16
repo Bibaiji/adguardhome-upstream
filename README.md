@@ -1,8 +1,5 @@
 # AdGuardHome 上游DNS服务器
 
-[![adguardhome上游DNS服务器](https://img.shields.io/badge/GitHub-AdGuardHome%20Upstream-blueviolet?style=flat-square&logo=github)](https://github.com/fernvenue/adguardhome-upstream)
-[![adguardhome上游DNS服务器](https://img.shields.io/badge/GitLab-AdGuardHome%20Upstream-orange?style=flat-square&logo=gitlab)](https://gitlab.com/fernvenue/adguardhome-upstream)
-
 在 [AdGuardHome](https://github.com/AdGuardTeam/AdGuardHome) 中使用 [felixonmars/dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) 列表
 
 * [使用步骤](#使用步骤)
