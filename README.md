@@ -1,5 +1,5 @@
 # AdGuardHome 上游DNS服务器
-Thank To adguardhome-upstream
+
 [![adguardhome上游DNS服务器](https://img.shields.io/badge/GitHub-AdGuardHome%20Upstream-blueviolet?style=flat-square&logo=github)](https://github.com/fernvenue/adguardhome-upstream)
 [![adguardhome上游DNS服务器](https://img.shields.io/badge/GitLab-AdGuardHome%20Upstream-orange?style=flat-square&logo=gitlab)](https://gitlab.com/fernvenue/adguardhome-upstream)
 
@@ -16,6 +16,7 @@ Thank To adguardhome-upstream
     * [牛在哪](#牛在哪)
 * [其他你可能关心的](#其他你可能关系的)
     * [配置](#配置)
+    * [感谢](#感谢)
     * [相关链接](#相关链接)
 
 ## 使用步骤
@@ -100,6 +101,10 @@ systemctl status upstream
 ### 配置
 
 脚本将自动选择和使用建议的配置。这些上游是经过精心挑选的，它们包括加密和受信任和未经过滤的上游，并且它们的IP地址上都配置了SSL证书，因此不需要Bootstrap DNS服务器进行额外的解析，它们可以在并行请求模式下尽快响应请求。如果您的网络环境不是很特殊，请不要更改脚本或推荐的配置。
+
+### 感谢
+
+此贴原帖来源于fernvenue/adguardhome-upstream，感谢大佬的项目使得我们可以用好用的上游DNS服务器文件，本文我仅仅对内容进行了翻译操作，由于本人英语能力有限，很多地方理解不是很透彻，不当之处，敬请诸君指出
 
 ### 相关链接
 
