@@ -1,45 +1,42 @@
-# AdGuardHome Upstream
+# AdGuardHome 上游DNS服务器
 
-[![adguardhome-upstream](https://img.shields.io/badge/GitHub-AdGuardHome%20Upstream-blueviolet?style=flat-square&logo=github)](https://github.com/fernvenue/adguardhome-upstream)
-[![adguardhome-upstream](https://img.shields.io/badge/GitLab-AdGuardHome%20Upstream-orange?style=flat-square&logo=gitlab)](https://gitlab.com/fernvenue/adguardhome-upstream)
+[![adguardhome上游DNS服务器](https://img.shields.io/badge/GitHub-AdGuardHome%20Upstream-blueviolet?style=flat-square&logo=github)](https://github.com/fernvenue/adguardhome-upstream)
+[![adguardhome上游DNS服务器](https://img.shields.io/badge/GitLab-AdGuardHome%20Upstream-orange?style=flat-square&logo=gitlab)](https://gitlab.com/fernvenue/adguardhome-upstream)
 
-The application of [felixonmars/dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) on [AdGuardHome](https://github.com/AdGuardTeam/AdGuardHome).
+在 [AdGuardHome](https://github.com/AdGuardTeam/AdGuardHome) 中使用 [felixonmars/dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) 列表
 
-* [Steps for usage](#steps-for-usage)
-    * [Before starting](#before-starting)
-    * [Get and run the script](#get-and-run-the-script)
-    * [Use systemd timer to automate](#use-systemd-timer-to-automate)
-* [Features and details](#features-and-details)
-    * [Features](#features)
-    * [Files in repository](#files-in-repository)
-    * [How felixonmars's dnsmasq-china-list works?](#how-felixonmarss-dnsmasq-china-list-works)
-    * [Why it's better than other methods?](#why-its-better-than-other-methods)
-* [Something else](#something-else)
-    * [Always use the recommended configuration first](#always-use-the-recommended-configuration-first)
-    * [This is not for...](#this-is-not-for)
+* [使用步骤](#使用步骤)
+    * [准备阶段](#准备阶段)
+    * [获取并运行脚本](#获取并运行脚本)
+    * [使用systemd timer服务实现自动化更新](#使用systemd-timer服务实现自动化更新)
+* [优势与细节](#优势与细节)
+    * [优势](#优势)
+    * [文件介绍](#文件介绍)
+    * [dnsmasq-china文件是如何运行的?](#dnsmasq-china是如何运行的？)
+    * [牛在哪](#牛在哪)
+* [其他你可能关心的](#其他你可能关系的)
+    * [尽量别修改配置](#尽量别修改配置)
     * [Links](#links)
 
-## Steps for usage
+## 使用步骤
 
-### Before starting
+### 准备阶段
 
-First, [cURL](https://curl.se/) and [sed](https://www.gnu.org/software/sed/) are required. And before starting, you need to change some settings in `AdGuardHome.yaml`:
+安装 [cURL](https://curl.se/) 和 [sed](https://www.gnu.org/software/sed/) 服务. 并且修改 `AdGuardHome.yaml` 配置:
 
-- `upstream_dns_file` **must be** `/usr/share/adguardhome.upstream`.
-- `all_servers` **should be** `true`.
-- `cache_optimistic` is recommended to be `true`.
+- `upstream_dns_file` **必须填写为** `/usr/share/adguardhome.upstream`
 
-<details><summary>What do these options do?</summary>
+<details><summary>这东西是干啥用的?</summary>
 
-The option `upstream_dns_file` allows you to loading upstreams from a file, `all_servers` enables parallel queries to all configured upstream servers to speed up resolving, and `cache_optimistic` makes AdGuardHome respond to client from cache first and send new request at the same time to the upstream and update the cache. For more information please read the [AdGuardHome Wiki](https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration).
+ `upstream_dns_file` 可以实现从文件中加载上游服务器.更多资讯详情可见 [AdGuardHome Wiki](https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration).
 
 </details>
 
-On most Unix systems you can find the `AdGuardHome.yaml` in `/opt/AdGuardHome`, but on macOS you should go `/Applications/AdGuardHome`, or maybe you can try `find /* -name AdGuardHome.yaml` to find it.
+注意：大部分unix系统可以在`/opt/AdGuardHome` 或 `/root/AdGuardHome` 找到 `AdGuardHome.yaml` 文件, 在苹果macOS 你可以在 `/Applications/AdGuardHome` 中尝试寻找它, 或者直接使用 `find /* -name AdGuardHome.yaml` 命令进行查找.
 
-### Get and run the script
+### 获取并运行脚本
 
-At this step, there is the possibility of DNS failure, please clearly understand and pay attention to back up your DNS settings.
+注意：这个步骤可能会让你的Adguard Home崩溃，请按需求备份它（我的已经崩溃好几次了）.
 
 ```
 curl -o "/usr/local/bin/upstream.sh" "https://gitlab.com/fernvenue/adguardhome-upstream/-/raw/master/upstream.sh"
@@ -47,15 +44,15 @@ chmod +x /usr/local/bin/upstream.sh
 /usr/local/bin/upstream.sh
 ```
 
-<details><summary>What if I using non-systemd Unix system?</summary>
+<details><summary>在non-systemd系统如何运行?</summary>
 
-If you are using AdGuardHome on non-systemd system, just replace the `systemctl restart AdGuardHome` in [upstream.sh](./upstream.sh) to the command that you restart the AdGuardHome. For example in openwrt: `sed -i "s|systemctl restart AdGuardHome|/etc/init.d/AdGuardHome|" /usr/local/bin/upstream`, that's all.
+如果是在non-systemd系统上运行的Adguard Home,在[upstream.sh](./upstream.sh)中替换命令 `systemctl restart AdGuardHome`去重启AdGuardHome.例如openwrt: `sed -i "s|systemctl restart AdGuardHome|/etc/init.d/AdGuardHome|" /usr/local/bin/upstream`.
 
 </details>
 
-### Use systemd timer to automate
+### 使用systemd timer服务实现自动化更新
 
-In the template provided by this repository, the timer is set to call the systemd service **once a day at 5am**.
+模板中, 系统 **每天在5点**调用systemd timer服务.
 
 ```
 curl -o "/etc/systemd/system/upstream.service" "https://gitlab.com/fernvenue/adguardhome-upstream/-/raw/master/upstream.service"
@@ -65,52 +62,48 @@ systemctl start upstream.timer
 systemctl status upstream
 ```
 
-<details><summary>What if I using non-systemd Unix system?</summary>
+<details><summary>在non-systemd系统如何运行?</summary>
 
-Maybe you can use [cron](https://en.wikipedia.org/wiki/Cron) to automate it, for example add `0 5 * * * /usr/local/bin/upstream.sh` to the cron configuration, and the configuration file for a user can be edited by calling `crontab -e` regardless of where the actual implementation stores this file.
+你可以使用 [cron](https://en.wikipedia.org/wiki/Cron) 去自动化调用它, 例如添加 `0 5 * * * /usr/local/bin/upstream.sh` 到cron服务中.
 
 </details>
 
-## Features and details
+## 优势和细节
 
-### Features
+### 优势
 
-- Improve resolve speed for Chinese domains.
-- Get the best CDN results.
-- Prevent DNS poisoning.
-- Better than other methods.
+- 提高解析速度.
+- 防止DNS污染.
+- 好于其他方式.
 
-### Files in repository
+### 文件介绍
 
-- [LICENSE](./LICENSE): BSD3 Clause Liscense.
-- [README.md](./README.md): Description file.
-- [upstream.service](./upstream.service): Systemd service template.
-- [upstream.timer](./upstream.timer): Systemd timer template.
-- [upstream.sh](./upstream.sh): Updating and converting scripts.
-- [v4.conf](./v4.conf): Recommended IPv4 only upstream configuration.
-- [v6only.conf](./v6only.conf): Recommended IPv6 only upstream configuration.
-- [v6.conf](./v6.conf): Recommended IPv4 and IPv6 upstream configuration.
+- [LICENSE](./LICENSE): BSD3 条款许可证.
+- [README.md](./README.md): 描述文件.
+- [upstream.service](./upstream.service): Systemd服务模板.
+- [upstream.timer](./upstream.timer): Systemd timer服务模板.
+- [upstream.sh](./upstream.sh): 更新与转化脚本.
+- [v4.conf](./v4.conf): 仅IPv4上游.
+- [v6only.conf](./v6only.conf): 仅IPv6上游.
+- [v6.conf](./v6.conf): 包含IPv4和IPv6上游.
 
-### How felixonmars's dnsmasq-china-list works?
+### dnsmasq-china文件是如何运行的？
 
-Using specific upstreams for some domains is a common way to accelerate internet in mainland China. This list collects domains that use NS servers located in mainland China, allowing us to use some DNS servers for them that don't break CDN or geo-based results, while using encrypted and trusted DNS servers for other domains.
+对某些域使用特定的上游是加速中国大陆互联网的常用方法。此列表收集使用位于中国大陆的DNS服务器的域名，允许我们为它们使用一些不会破坏CDN或基于地理位置的结果的DNS服务器，同时对其他域使用加密和受信任的DNS服务器。
 
-### Why it's better than other methods?
+### 牛在哪
 
-On the one hand, for DNS resolution, when the domain's name server is in other region, even if the domain is resolved to an address in mainland China, we can still get the fastest resolution by DNS request from the other region in most cases, you might say that some DNS servers have caches, usually it brings a lot of problems. In fact, AdGuardHome has adopted optimistic caching since v0.107, which is much better than relying on upstream DNS caching. On the other hand, many tests are showing that some of the poisoned results are IP addresses located in anywhere. Therefore, it is impractical to infer whether the result is poisoned by the location of the IP address. This list only includes domains that use NS servers from mainland China, that's why it is better than redir-host or any other similar methods. 
+一方面，对于DNS解析，当域名服务器在其他地域时，即使域名解析为中国大陆中的某个地址，我们在大多数情况下仍可以通过来自其他地域的DNS请求获得最快的解析，你可能会说一些DNS服务器有缓存，通常会带来很多问题。事实上，AdGuardHome 从 v0.107 开始就采用了乐观缓存，这比依赖上游DNS缓存要好得多。另一方面，许多测试表明，到处都有DNS污染。因此，推断结果是否被 IP 地址的位置污染不切实际。此列表仅包括使用中国大陆DNS服务器的域，这就是为什么它比任何其他类似方法更好的原因。
 
-## Something else
+## 其他你可能关心的
 
-### Always use the recommended configuration first
+### 尽量别修改配置
 
-The recommended configurations will be automatically selected and used by the script. These upstreams are carefully selected, they include encrypted and trusted and unfiltered upstreams, and they all have SSL certificates configured on their IP addresses, so there is no need for additional resolution by Bootstrap DNS servers, and they can respond to requests as quickly as possible in parallel request mode. If your network environment is not very special, **DO NOT** change the script or recommended configurations.
-
-### This is not for...
-
-This is **NOT FOR** breaking any network firewall, and in fact it **CAN NOT** be used for that either. It's only used to accelerate internet in mainland China such as improve DNS resolve speed for Chinese domains, get the best CDN or geo-based results and so on, please don't misunderstand it.
+脚本将自动选择和使用建议的配置。这些上游是经过精心挑选的，它们包括加密和受信任和未经过滤的上游，并且它们的IP地址上都配置了SSL证书，因此不需要Bootstrap DNS服务器进行额外的解析，它们可以在并行请求模式下尽快响应请求。如果您的网络环境不是很特殊，请不要更改脚本或推荐的配置。
 
 ### Links
 
+- 原帖: https://github.com/fernvenue/adguardhome-upstream
 - AdGuardHome: https://github.com/AdguardTeam/AdGuardHome
 - felixonmars/dnsmasq-china-list: https://github.com/felixonmars/dnsmasq-china-list
 - Google Public DNS: https://developers.google.com/speed/public-dns
