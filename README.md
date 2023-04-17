@@ -1,4 +1,4 @@
-# AdGuardHome 上游DNS服务器
+# AdGuardHome上游DNS服务器
 
 在 [AdGuardHome](https://github.com/AdGuardTeam/AdGuardHome) 中使用 [Potterli20/dns-adguardhome-whitelist_full.txt
 ](https://github.com/Potterli20/file) 列表
