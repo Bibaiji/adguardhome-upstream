@@ -1,6 +1,7 @@
 # AdGuardHome 上游DNS服务器
 
-在 [AdGuardHome](https://github.com/AdGuardTeam/AdGuardHome) 中使用 [felixonmars/dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) 列表
+在 [AdGuardHome](https://github.com/AdGuardTeam/AdGuardHome) 中使用 [Potterli20/dns-adguardhome-whitelist_full.txt
+](https://github.com/Potterli20/file) 列表
 
 * [使用步骤](#使用步骤)
     * [准备阶段](#准备阶段)
@@ -37,7 +38,7 @@
 注意：这个步骤可能会让你的Adguard Home崩溃，请按需求备份它（我的已经崩溃好几次了）.
 
 ```
-curl -o "/usr/local/bin/upstream.sh" "https://gitlab.com/fernvenue/adguardhome-upstream/-/raw/master/upstream.sh"
+curl -o "/usr/local/bin/upstream.sh" "https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/upstream.sh"
 chmod +x /usr/local/bin/upstream.sh
 /usr/local/bin/upstream.sh
 ```
@@ -72,7 +73,7 @@ systemctl status upstream
 
 - 提高解析速度.
 - 防止DNS污染.
-- 好于其他方式.
+- 白名单内域名采用国内大厂DNS服务器,其他域名采用谷歌/cloudflare的DNS服务器.
 
 ### 文件介绍
 
@@ -87,7 +88,7 @@ systemctl status upstream
 
 ### dnsmasq-china文件是如何运行的？
 
-对某些域使用特定的上游是加速中国大陆互联网的常用方法。此列表收集使用位于中国大陆的DNS服务器的域名，允许我们为它们使用一些不会破坏CDN或基于地理位置的结果的DNS服务器，同时对其他域使用加密和受信任的DNS服务器。
+国内域名使用特定的上游DNS服务器加速链接，国外域名使用无污染、解析快的DNS服务器加速链接（我的服务器ping dns.google后仅有18ms的延迟）。此列表收集使用位于中国大陆的DNS服务器的域名，允许我们为它们使用一些不会破坏CDN或基于地理位置的结果的DNS服务器，同时对其他域使用加密和受信任的DNS服务器。
 
 ### 牛在哪
 
@@ -97,15 +98,16 @@ systemctl status upstream
 
 ### 配置
 
-脚本将自动选择和使用建议的配置。这些上游是经过精心挑选的，它们包括加密和受信任和未经过滤的上游，并且它们的IP地址上都配置了SSL证书，因此不需要Bootstrap DNS服务器进行额外的解析，它们可以在并行请求模式下尽快响应请求。如果您的网络环境不是很特殊，请不要更改脚本或推荐的配置。
+脚本将自动选择和使用建议的配置。这些上游是经过精心挑选的，它们包括加密和受信任和未经过滤的上游，它们可以在并行请求模式下尽快响应请求。如果您的网络环境，在国内使用肯定是足够的了。但是由于每个人的网络环境不同，因此在其他人使用本文方式进行配置时，应当按需求选择上游DNS服务器（修改v4.conf，v6.conf，v6only.conf以及upstream.sh文件）.
 
 ### 感谢
 
-此贴原帖来源于fernvenue/adguardhome-upstream，感谢大佬的项目使得我们可以用好用的上游DNS服务器文件，本文我仅仅对内容进行了翻译操作，由于本人英语能力有限，很多地方理解不是很透彻，不当之处，敬请诸君指出
+此贴原帖来源于fernvenue/adguardhome-upstream，感谢大佬的项目使得我们可以用这个方法使用无污染上游DNS服务器文件，同时感谢Potterli20大佬提供的dns-adguardhome-whitelist文件，本文我对原帖内容进行了翻译操作并加入了自己的一些修改，由于本人不是计算机专业出身，对java语言、shell语言不熟悉，所有东西都还在学习当中，很多地方理解不是很透彻，不当之处，敬请诸君指出.
 
 ### 相关链接
 
 - 原帖: https://github.com/fernvenue/adguardhome-upstream
+- Potterli20: https://github.com/Potterli20/file
 - AdGuardHome: https://github.com/AdguardTeam/AdGuardHome
 - felixonmars/dnsmasq-china-list: https://github.com/felixonmars/dnsmasq-china-list
 - Google Public DNS: https://developers.google.com/speed/public-dns
