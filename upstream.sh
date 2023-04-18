@@ -32,7 +32,6 @@ echo "$DATE: Download lists"
 wget https://raw.githubusercontent.com/Bibaiji/Chinese-list/master/CHN.ALL.agh -O/var/tmp/2.upstream
 echo "$DATE: Processing data format..."
 cat "/var/tmp/default.upstream" "/var/tmp/1.upstream" "/var/tmp/2.upstream" > /usr/share/adguardhome.upstream
-if ! [[ $IPv4 == "true" ]]; then sed -i "s|8.8.8.8|2001:4860:4860::8888|g" /usr/share/adguardhome.upstream; fi
 echo "$DATE: Cleaning..."
 rm /var/tmp/*.upstream
 systemctl restart AdGuardHome
