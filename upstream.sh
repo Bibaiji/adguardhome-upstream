@@ -12,24 +12,26 @@ fi
 if [[ $IPv4 == "true" ]]; then
 	if [[ $IPv6 == "true" ]]; then
 		echo "$DATE: IPv4 and IPv6 connections both available."
-		curl -o "/var/tmp/default.upstream" https://ghproxy.com/https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v6.conf > /dev/null 2>&1
+		curl -o "/var/tmp/default.upstream" https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v6.conf > /dev/null 2>&1
 	else
 		echo "$DATE: IPv4 connection available."
-		curl -o "/var/tmp/default.upstream" https://ghproxy.com/https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v4.conf > /dev/null 2>&1
+		curl -o "/var/tmp/default.upstream" https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v4.conf > /dev/null 2>&1
 	fi
 else
 	if [[ $IPv6 == "true" ]]; then
 		echo "$DATE: IPv6 connection available."
-		curl -o "/var/tmp/default.upstream" https://ghproxy.com/https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v6only.conf > /dev/null 2>&1
+		curl -o "/var/tmp/default.upstream" https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v6only.conf > /dev/null 2>&1
 	else
 		echo "ERROR: No available network connection was detected, please try again."
 		exit 1
 	fi
 fi
 echo "$DATE: Getting data updates..."
-curl -s https://ghproxy.com/https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt | sed "/#/d" > "/var/tmp/chinalist.upstream"
+curl -s https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt | sed "/#/d" > "/var/tmp/chinawhitelist.upstream"
+echo "$DATE: Download lists"
+curl -s https://gitee.com/bibaiji/Chinese-list/raw/master/CHN.ALL.agh | sed "/#/d" > "/var/tmp/chineselist.upstream"
 echo "$DATE: Processing data format..."
-cat "/var/tmp/default.upstream" "/var/tmp/chinalist.upstream" > /usr/share/adguardhome.upstream
+cat "/var/tmp/default.upstream" "/var/tmp/chinalist.upstream" "/var/tmp/chineselist.upstream" > /usr/share/adguardhome.upstream
 if ! [[ $IPv4 == "true" ]]; then sed -i "s|8.8.8.8|2001:4860:4860::8888|g" /usr/share/adguardhome.upstream; fi
 echo "$DATE: Cleaning..."
 rm /var/tmp/*.upstream
