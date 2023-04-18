@@ -29,7 +29,7 @@ fi
 echo "$DATE: Getting data updates..."
 curl -s https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt | sed "/#/d" > "/var/tmp/chinawhitelist.upstream"
 echo "$DATE: Download lists"
-curl -s https://gitee.com/bibaiji/Chinese-list/raw/master/CHN.ALL.agh | sed "/#/d" > "/var/tmp/chineselist.upstream"
+curl -s https://raw.githubusercontent.com/Bibaiji/Chinese-list/master/CHN.ALL.agh | sed "/#/d" > "/var/tmp/chineselist.upstream"
 echo "$DATE: Processing data format..."
 cat "/var/tmp/default.upstream" "/var/tmp/chinalist.upstream" "/var/tmp/chineselist.upstream" > /usr/share/adguardhome.upstream
 if ! [[ $IPv4 == "true" ]]; then sed -i "s|8.8.8.8|2001:4860:4860::8888|g" /usr/share/adguardhome.upstream; fi
