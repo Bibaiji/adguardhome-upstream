@@ -3,7 +3,7 @@ Description=AdGuardHome Upstream Timer
 After=network-online.target                                                                                                      
                                                                                                                                  
 [Timer]                                                                                                                          
-OnCalendar=*-*-* 12:50                                                                                                            
+OnCalendar=*-*-* 5:00                                                                                                            
 Unit=upstream.service                                                                                                            
                                                                                                                                  
 [Install]                                                                                                                        
