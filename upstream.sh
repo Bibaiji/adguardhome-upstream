@@ -27,9 +27,9 @@ else
 	fi
 fi
 echo "$DATE: Getting data updates..."
-curl -o "/var/tmp/1.upstream" https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt > /dev/null 2>&1
+wget https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt -O/var/tmp/1.upstream
 echo "$DATE: Download lists"
-curl -s https://raw.githubusercontent.com/Bibaiji/Chinese-list/master/CHN.ALL.agh | sed "/#/d" > "/var/tmp/2.upstream"
+wget https://raw.githubusercontent.com/Bibaiji/Chinese-list/master/CHN.ALL.agh -O/var/tmp/2.upstream
 echo "$DATE: Processing data format..."
 cat "/var/tmp/default.upstream" "/var/tmp/1.upstream" "/var/tmp/2.upstream" > /usr/share/adguardhome.upstream
 if ! [[ $IPv4 == "true" ]]; then sed -i "s|8.8.8.8|2001:4860:4860::8888|g" /usr/share/adguardhome.upstream; fi
