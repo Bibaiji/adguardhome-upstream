@@ -12,15 +12,15 @@ fi
 if [[ $IPv4 == "true" ]]; then
 	if [[ $IPv6 == "true" ]]; then
 		echo "$DATE: IPv4 and IPv6 connections both available."
-		curl -o "/var/tmp/default.upstream" https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v6.conf > /dev/null 2>&1
+		curl -o "/var/tmp/default.upstream" https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/v6.conf > /dev/null 2>&1
 	else
 		echo "$DATE: IPv4 connection available."
-		curl -o "/var/tmp/default.upstream" https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v4.conf > /dev/null 2>&1
+		curl -o "/var/tmp/default.upstream" https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/v4.conf > /dev/null 2>&1
 	fi
 else
 	if [[ $IPv6 == "true" ]]; then
 		echo "$DATE: IPv6 connection available."
-		curl -o "/var/tmp/default.upstream" https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/v6only.conf > /dev/null 2>&1
+		curl -o "/var/tmp/default.upstream" https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/v6only.conf > /dev/null 2>&1
 	else
 		echo "ERROR: No available network connection was detected, please try again."
 		exit 1
@@ -29,7 +29,7 @@ fi
 echo "$DATE: Getting data updates..."
 wget https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt -O/var/tmp/1.upstream
 echo "$DATE: Download lists"
-wget https://raw.githubusercontent.com/Bibaiji/Chinese-list/master/CHN.ALL.agh -O/var/tmp/2.upstream
+wget https://jihulab.com/Bibaiji/Chinese-list/-/raw/master/CHN.ALL.agh -O/var/tmp/2.upstream
 echo "$DATE: Processing data format..."
 cat "/var/tmp/default.upstream" "/var/tmp/1.upstream" "/var/tmp/2.upstream" > /usr/share/adguardhome.upstream
 echo "$DATE: Cleaning..."
