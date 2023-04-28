@@ -38,7 +38,7 @@
 注意：这个步骤可能会让你的Adguard Home崩溃，请按需求备份它（我的已经崩溃好几次了）.
 
 ```
-curl -o "/usr/local/bin/upstream.sh" "https://raw.githubusercontent.com/Bibaiji/adguardhome-upstream/master/upstream.sh"
+curl -o "/usr/local/bin/upstream.sh" "https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/upstream.sh"
 chmod +x /usr/local/bin/upstream.sh
 /usr/local/bin/upstream.sh
 ```
@@ -51,11 +51,11 @@ chmod +x /usr/local/bin/upstream.sh
 
 ### 使用systemd timer服务实现自动化更新
 
-模板中, 系统 **每天在5点**调用systemd timer服务.
+模板中, 系统 **每天在3点**调用systemd timer服务.
 
 ```
-curl -o "/etc/systemd/system/upstream.service" "https://gitlab.com/fernvenue/adguardhome-upstream/-/raw/master/upstream.service"
-curl -o "/etc/systemd/system/upstream.timer" "https://gitlab.com/fernvenue/adguardhome-upstream/-/raw/master/upstream.timer"
+curl -o "/etc/systemd/system/upstream.service" "https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/upstream.service"
+curl -o "/etc/systemd/system/upstream.timer" "https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/upstream.timer"
 systemctl enable upstream.timer
 systemctl start upstream.timer
 systemctl status upstream
@@ -63,7 +63,7 @@ systemctl status upstream
 
 <details><summary>在non-systemd系统如何运行?</summary>
 
-你可以使用 [cron](https://en.wikipedia.org/wiki/Cron) 去自动化调用它, 例如添加 `0 5 * * * /usr/local/bin/upstream.sh` 到cron服务中.
+你可以使用 [cron](https://en.wikipedia.org/wiki/Cron) 去自动化调用它, 例如添加 `0 3 * * * /usr/local/bin/upstream.sh` 到cron服务中.
 
 </details>
 
