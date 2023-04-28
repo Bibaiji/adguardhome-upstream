@@ -28,10 +28,12 @@ else
 fi
 echo "$DATE: Getting data updates..."
 wget https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt -O/var/tmp/1.upstream
-echo "$DATE: Download lists"
+echo "$DATE: 1.upstream finished"
 wget https://jihulab.com/Bibaiji/Chinese-list/-/raw/master/CHN.ALL.agh -O/var/tmp/2.upstream
-echo "$DATE: Processing data format..."
-cat "/var/tmp/default.upstream" "/var/tmp/1.upstream" "/var/tmp/2.upstream" > /usr/share/adguardhome.upstream
+echo "$DATE: 2.upstream finished"
+wget https://raw.githubusercontent.com/Bibaiji/Chinese-list/master/ChinaAdd.agh -O/var/tmp/3.upstream
+echo "$DATE: 3.upstream finished"
+cat "/var/tmp/default.upstream" "/var/tmp/1.upstream" "/var/tmp/2.upstream" "/var/tmp/3.upstream" > /usr/share/adguardhome.upstream
 echo "$DATE: Cleaning..."
 rm /var/tmp/*.upstream
 systemctl restart AdGuardHome
