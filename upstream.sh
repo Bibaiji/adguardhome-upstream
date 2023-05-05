@@ -27,7 +27,7 @@ else
 	fi
 fi
 echo "$DATE: Getting data updates..."
-wget https://github.com/Potterli20/file/releases/download/dns-hosts/dns-adguardhome-whitelist_full.txt -O/var/tmp/1.upstream
+wget https://jihulab.com/Bibaiji/Chinese-list/-/raw/master/Potterli20-White.agh -O/var/tmp/1.upstream
 echo "$DATE: 1.upstream finished"
 wget https://jihulab.com/Bibaiji/Chinese-list/-/raw/master/CHN.ALL.agh -O/var/tmp/2.upstream
 echo "$DATE: 2.upstream finished"
