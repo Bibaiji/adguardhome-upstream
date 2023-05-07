@@ -35,7 +35,7 @@
 
 ### 获取并运行脚本
 
-注意：这个步骤可能会让你的Adguard Home崩溃，请按需求备份它（我的已经崩溃好几次了）.
+注意：这个步骤极其大的可能性会让你的Adguard Home崩溃，请按需求备份它（我的已经崩溃不止一次了）.
 
 ```
 curl -o "/usr/local/bin/upstream.sh" "https://jihulab.com/Bibaiji/adguardhome-upstream/-/raw/master/upstream.sh"
